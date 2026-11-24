@@ -1,0 +1,265 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User financial profile and global spending limits.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 200 },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "monthlySalaryTarget": { "type": "number" },
+        "dailySpendLimit": { "type": "number" },
+        "weeklySpendLimit": { "type": "number" },
+        "monthlySpendLimit": { "type": "number" },
+        "monthlySavingsTarget": { "type": "number" },
+        "noSpendDays": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "createdAt", "updatedAt"]
+    },
+    "IncomeEntry": {
+      "title": "IncomeEntry",
+      "description": "Recorded salary or additional income transaction.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 140 },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "maxLength": 60 },
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "description": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "amount", "category", "date", "createdAt", "updatedAt"]
+    },
+    "ExpenseEntry": {
+      "title": "ExpenseEntry",
+      "description": "Daily expense transaction in Indian Rupees.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 140 },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "maxLength": 60 },
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "description": { "type": "string", "maxLength": 400 },
+        "isUnnecessary": { "type": "boolean" },
+        "isFixed": { "type": "boolean" },
+        "recurringId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "amount", "category", "date", "paymentMethod", "isUnnecessary", "isFixed", "createdAt", "updatedAt"]
+    },
+    "RecurringExpense": {
+      "title": "RecurringExpense",
+      "description": "Recurring fixed monthly/quarterly/yearly obligation.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 140 },
+        "category": { "type": "string", "maxLength": 60 },
+        "amount": { "type": "number" },
+        "dueDay": { "type": "number" },
+        "frequency": { "type": "string", "maxLength": 30 },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "reminderDaysBefore": { "type": "number" },
+        "active": { "type": "boolean" },
+        "lastLoggedMonth": { "type": "string", "maxLength": 10 },
+        "description": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "category", "amount", "dueDay", "frequency", "paymentMethod", "active", "createdAt", "updatedAt"]
+    },
+    "Budget": {
+      "title": "Budget",
+      "description": "Category-wise weekly or monthly spending limit.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "category": { "type": "string", "maxLength": 60 },
+        "limitAmount": { "type": "number" },
+        "period": { "type": "string", "maxLength": 20 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "category", "limitAmount", "period", "createdAt", "updatedAt"]
+    },
+    "SavingsGoal": {
+      "title": "SavingsGoal",
+      "description": "Target savings goal with progress tracking.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 140 },
+        "category": { "type": "string", "maxLength": 60 },
+        "targetAmount": { "type": "number" },
+        "currentSavings": { "type": "number" },
+        "targetDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "category", "targetAmount", "currentSavings", "targetDate", "createdAt", "updatedAt"]
+    },
+    "SavingsContribution": {
+      "title": "SavingsContribution",
+      "description": "Deposit contribution toward a savings goal.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "goalId": { "type": "string", "maxLength": 128 },
+        "goalTitle": { "type": "string", "maxLength": 140 },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "note": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "goalId", "goalTitle", "amount", "date", "createdAt"]
+    },
+    "Bill": {
+      "title": "Bill",
+      "description": "Upcoming or paid bill reminder.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 140 },
+        "category": { "type": "string", "maxLength": 60 },
+        "amount": { "type": "number" },
+        "dueDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "status": { "type": "string", "maxLength": 20 },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "recurringId": { "type": "string", "maxLength": 128 },
+        "paidMonth": { "type": "string", "maxLength": 10 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "category", "amount", "dueDate", "status", "paymentMethod", "createdAt", "updatedAt"]
+    },
+    "Loan": {
+      "title": "Loan",
+      "description": "EMI loan, money borrowed, or money lent tracker.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 140 },
+        "loanType": { "type": "string", "maxLength": 40 },
+        "counterparty": { "type": "string", "maxLength": 120 },
+        "principalAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "emiAmount": { "type": "number" },
+        "interestRate": { "type": "number" },
+        "dueDay": { "type": "number" },
+        "startDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "endDate": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "maxLength": 20 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "loanType", "counterparty", "principalAmount", "remainingAmount", "emiAmount", "status", "createdAt", "updatedAt"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "Recurring digital or service subscription.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120 },
+        "amount": { "type": "number" },
+        "billingCycle": { "type": "string", "maxLength": 20 },
+        "nextBillingDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "maxLength": 10 },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "category": { "type": "string", "maxLength": 60 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "amount", "billingCycle", "nextBillingDate", "paymentMethod", "active", "createdAt", "updatedAt"]
+    },
+    "PaymentMethod": {
+      "title": "PaymentMethod",
+      "description": "User payment method (Cash, UPI, Debit Card, Credit Card).",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 80 },
+        "type": { "type": "string", "maxLength": 40 },
+        "lastFour": { "type": "string", "maxLength": 10 },
+        "monthlyLimit": { "type": "number" },
+        "isDefault": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "type", "isDefault", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "Financial alert or milestone notification.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 140 },
+        "message": { "type": "string", "maxLength": 400 },
+        "type": { "type": "string", "maxLength": 40 },
+        "severity": { "type": "string", "maxLength": 20 },
+        "isRead": { "type": "boolean" },
+        "dedupeKey": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "message", "type", "severity", "isRead", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile and global budget limits."
+    },
+    "/users/{userId}/income/{incomeId}": {
+      "schema": { "$ref": "#/entities/IncomeEntry" },
+      "description": "User income entries."
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/ExpenseEntry" },
+      "description": "User daily expense records."
+    },
+    "/users/{userId}/recurring_expenses/{recurringId}": {
+      "schema": { "$ref": "#/entities/RecurringExpense" },
+      "description": "User recurring fixed expenses and rent."
+    },
+    "/users/{userId}/budgets/{budgetId}": {
+      "schema": { "$ref": "#/entities/Budget" },
+      "description": "Category-wise budget limits."
+    },
+    "/users/{userId}/savings_goals/{goalId}": {
+      "schema": { "$ref": "#/entities/SavingsGoal" },
+      "description": "User savings goals."
+    },
+    "/users/{userId}/savings_contributions/{contribId}": {
+      "schema": { "$ref": "#/entities/SavingsContribution" },
+      "description": "Contributions made to savings goals."
+    },
+    "/users/{userId}/bills/{billId}": {
+      "schema": { "$ref": "#/entities/Bill" },
+      "description": "Upcoming and paid bill reminders."
+    },
+    "/users/{userId}/loans/{loanId}": {
+      "schema": { "$ref": "#/entities/Loan" },
+      "description": "EMI, loans, money borrowed, and money lent."
+    },
+    "/users/{userId}/subscriptions/{subId}": {
+      "schema": { "$ref": "#/entities/Subscription" },
+      "description": "Active and paused subscriptions."
+    },
+    "/users/{userId}/payment_methods/{pmId}": {
+      "schema": { "$ref": "#/entities/PaymentMethod" },
+      "description": "User payment instruments."
+    },
+    "/users/{userId}/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User alerts for bills, budgets, and savings milestones."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "MoneyWise – Your Smart Money Manager",
+  "description": "AI-powered personal finance management dashboard for tracking salary, daily expenses, recurring bills, budgets, savings goals, loans, and financial reports in Indian Rupees.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
